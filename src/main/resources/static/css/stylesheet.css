@@ -56,15 +56,15 @@ button:hover {
 }
 
 .ampel-container {
-    margin-left: 12%;
+    margin-left: 10%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .ampel {
-    width: 100px;
-    height: 250px;
+    width: 150px;
+    height: 350px;
     background: black;
     display: flex;
     flex-direction: column;
@@ -75,17 +75,21 @@ button:hover {
 }
 
 .light {
-    width: 65px;
-    height: 65px;
+    width: 80px;
+    height: 80px;
     border-radius: 100%;
     background: #808080;
     transition: background 0.3s, box-shadow 0.3s;
+
+    -webkit-box-shadow:0px 0px 15px 10px rgba(125,125,125,0.7);
+    -moz-box-shadow: 0px 0px 15px 10px rgba(125,125,125,0.7);
+    box-shadow: 0px 0px 15px 10px rgba(125,125,125,0.7);
 }
 
 .terminal {
     width: 80%;
-    height: 100px;
-    max-height: 100px;
+    height: 120px;
+    max-height: 120px;
     background: black;
     color: lime;
     padding: 10px;
