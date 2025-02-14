@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java IDE mit Ampel-Objekt</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs/loader.min.js"></script>
+    <link rel="stylesheet" href="/css/stylesheet.css">
+    <script src="/js/frontend.js"></script>
+</head>
+<body>
+
+    <h2 id="title">Willkommen! Deine eigene Java-IDE mit Ampel</h2>
+
+    <div class="container">
+        <div class="editor-container">
+            <div id="editor" class="editor"></div>
+            <div class="buttons">
+                <button onclick="runCode()">Start Simulation</button>
+                <button onclick="stopSimulation()">Stop</button>
+                <button onclick="resetSimulation()">Reset</button>
+            </div>
+        </div>
+
+        <div class="ampel-container">
+            <h3>Deine Ampel</h3>
+            <div class="ampel">
+                <div id="light0" class="light"></div>
+                <div id="light1" class="light"></div>
+                <div id="light2" class="light"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="terminal" class="terminal"></div>
+
+</body>
+</html>
