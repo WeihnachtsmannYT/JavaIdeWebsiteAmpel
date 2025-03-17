@@ -8,6 +8,18 @@
   <build>
     <plugins>
       <plugin>
+          <groupId>org.openjfx</groupId>
+          <artifactId>javafx-maven-plugin</artifactId>
+          <version>0.0.8</version>
+          <configuration>
+              <mainClass>com.example.ampel.Main</mainClass>
+              <options>
+                  <option>--add-modules</option>
+                  <option>javafx.controls,javafx.web</option>
+              </options>
+          </configuration>
+      </plugin>
+        <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>3.4.2</version>
@@ -32,7 +44,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>com.example.ampel.AmpelApplication</mainClass>
+                    <mainClass>com.example.ampel.Main</mainClass>
                 </transformer>
               </transformers>
             </configuration>

@@ -51,13 +51,13 @@ public class MainController {
     @PostMapping("/stop")
     public Map<String, String> stopSimulation(@RequestBody CodeRequest request) {
         String sessionId = request.getSessionId();
-        System.out.println("⏹️ Stopping execution for session: " + sessionId);
+        System.out.println("⏹️ Stopping Simulation for session: " + sessionId);
 
         CodeExecutionService.stopExecution(sessionId);
 
         Map<String, String> response = new HashMap<>();
-        response.put("status", "success");
-        response.put("message", "Execution stopped for session: " + sessionId);
+        response.put("output", "⏹️ Simulation stopped for you!");
+        response.put("error", "");
 
         return response;
     }

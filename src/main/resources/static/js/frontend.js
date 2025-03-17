@@ -26,6 +26,7 @@ function connectWebSocket() {
 
                 if (data.type === "session_relinked") {
                     isSessionReady = true;
+                    isRunning = false;
                     console.log("🔗 Session confirmed:", data.sessionId);
                     updateTerminal("🔗 WebSocket reconnected!", "");
                     return;
@@ -78,7 +79,8 @@ function runCode() {
     })
     .then(res => res.json())
     .then(data => {
-        if (data.output === ("✅ Code executed successfully!")) {
+        if (data.output.startsWith("✅ Code executed successfully")||
+        data.output.startsWith("⏳ Execution timed out after")) {
             console.log("✅ Simulation finished!");
             isRunning = false;
         }
@@ -91,6 +93,7 @@ function runCode() {
 }
 
 function stopSimulation() {
+    isRunning = false;
     fetch("/api/stop", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -98,20 +101,24 @@ function stopSimulation() {
     })
     .then(res => res.json())
     .then(data => {
-        console.log(data.message);
-        updateTerminal(data.message, "");
+        console.log(data.output);
+        updateTerminal(data.output, data.error);
     })
     .catch(err => updateTerminal("", "❌ Fehler: " + err));
 }
 
-// WebSocket-Verbindung herstellen und Debugging aktivieren
-socket.onopen = function() {
-    console.log("✅ WebSocket verbunden!");
-};
+function resetSimulation() {
+    isRunning = false;
+    stopSimulation();
 
-socket.onerror = function(error) {
-    console.log("✅ WebSocket-Fehler: ", error);
-};
+    // Setze alle Lichter auf Grau (RGB 125,125,125)
+    for (let i = 0; i <= 2; i++) {
+        updateLight(i,`rgb(125, 125, 125)`);
+    }
+
+    clearTerminal();
+    updateTerminal("✅ Simulation resetted!", "");
+}
 
 // Initialisiere Monaco-Editor
 require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.39.0/min/vs' }});
@@ -169,11 +176,21 @@ function updateTerminal(output, error) {
     const message = document.createElement('div');
     message.className = 'terminal-message';
 
+
+    let color;
     if (error) {
-        message.style.color = '#ff4444';
+        color = '#ff4444'; // Rot für Fehler
+    } else if (output && output.includes("⏹️ Simulation stopped for you!")) {
+        color = '#ffff44'; // Gelb für Stopp-Nachricht
+    } else {
+        color = '#44ff44'; // Grün für normale Nachrichten
+    }
+
+    message.style.color = color;
+
+    if (error) {
         message.innerHTML = `<span class="timestamp">${new Date().toLocaleTimeString()}</span> ${error}`;
     } else {
-        message.style.color = '#44ff44';
         message.innerHTML = `<span class="timestamp">${new Date().toLocaleTimeString()}</span> ${output}`;
     }
 
@@ -185,4 +202,11 @@ function updateTerminal(output, error) {
 
     // Auto-scroll
     terminal.scrollTop = terminal.scrollHeight;
+}
+
+function clearTerminal() {
+    const terminal = document.getElementById("terminal");
+    while(terminal.firstChild) {
+        terminal.removeChild(terminal.firstChild);
+    }
 }
